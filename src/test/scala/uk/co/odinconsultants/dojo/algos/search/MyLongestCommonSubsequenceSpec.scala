@@ -12,7 +12,7 @@ class MyLongestCommonSubsequenceSpec extends AnyWordSpec with Matchers {
   val actual = "emt ole"
 
   def checkMemoization[T: Ordering](xs: Seq[T], ys: Seq[T], actual: Seq[T]): Assertion =
-    lcsLengthMemoization(xs, ys) shouldBe actual.length
+    lcsLengthMemoization(xs, ys) shouldBe actual.toList
 
   def checkRecursive[T: Ordering](xs: Seq[T], ys: Seq[T], actual: Seq[T]): Assertion =
     lcsRecursive(xs, ys) shouldBe actual.toList
@@ -22,7 +22,7 @@ class MyLongestCommonSubsequenceSpec extends AnyWordSpec with Matchers {
       checkMemoization(xs, ys, actual)
     }
 
-    "be itself when comparing to itself" ignore {
+    "be itself when comparing to itself" in {
       checkMemoization(xs, xs, xs)
     }
   }

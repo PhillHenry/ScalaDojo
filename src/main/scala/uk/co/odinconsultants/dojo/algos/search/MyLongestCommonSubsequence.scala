@@ -1,5 +1,7 @@
 package uk.co.odinconsultants.dojo.algos.search
 
+import scala.collection.mutable.ArrayBuffer
+
 object MyLongestCommonSubsequence {
 
   def lcsRecursive[T: Ordering](xs: Seq[T], ys: Seq[T]): Seq[T] = {
@@ -22,7 +24,7 @@ object MyLongestCommonSubsequence {
     lcs(xs, ys, Seq.empty[T])
   }
 
-  def lcsLengthMemoization[T: Ordering](xs: Seq[T], ys: Seq[T]): Int = {
+  def lcsLengthMemoization[T: Ordering](xs: Seq[T], ys: Seq[T]): Seq[T] = {
     val n: Int = xs.length
     val m: Int = ys.length
     type Element = Int
@@ -53,14 +55,25 @@ object MyLongestCommonSubsequence {
       }
     }
     calc(0, 0)
-    var max = missing
-    for {
-      i <- 0 to n
-      j <- 0 to m
-    } yield {
-      max = math.max(matrix(i)(j), max)
-      max
+    var i = 0
+    var j = 0
+    val buffer = new ArrayBuffer[T]()
+    while (i < n && j < m) {
+      if (xs(i) == ys(j)) {
+        buffer.append(xs(i))
+        i = i + 1
+        j = j + 1
+      } else {
+        val v = matrix(i)(j)
+        val right = if (j < m - 1) matrix(i)(j + 1) else v
+        val down = if (i < n - 1) matrix(i + 1)(j) else v
+        if (right > down) {
+          j = j + 1
+        } else {
+          i = i + 1
+        }
+      }
     }
-    max
+    buffer.toSeq
   }
 }
