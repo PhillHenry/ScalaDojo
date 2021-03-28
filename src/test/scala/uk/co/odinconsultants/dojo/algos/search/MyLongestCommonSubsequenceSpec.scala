@@ -1,8 +1,9 @@
 package uk.co.odinconsultants.dojo.algos.search
 
+import org.scalatest.Assertion
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import uk.co.odinconsultants.dojo.algos.search.MyLongestCommonSubsequence.longestCommonSubsequence
+import uk.co.odinconsultants.dojo.algos.search.MyLongestCommonSubsequence.{lcsMemoization, lcsRecursive}
 
 class MyLongestCommonSubsequenceSpec extends AnyWordSpec with Matchers {
 
@@ -10,15 +11,29 @@ class MyLongestCommonSubsequenceSpec extends AnyWordSpec with Matchers {
   val ys = "empty bottle"
   val actual = "emt ole"
 
-  s"Longest common subsequence of $xs and $ys" should {
-    s"be $actual" in {
-      longestCommonSubsequence(xs, ys) shouldBe actual.toList
+  def checkMemoization[T: Ordering](xs: Seq[T], ys: Seq[T], actual: Seq[T]): Assertion =
+    lcsMemoization(xs, ys) shouldBe actual.toList
+
+  def checkRecursive[T: Ordering](xs: Seq[T], ys: Seq[T], actual: Seq[T]): Assertion =
+    lcsRecursive(xs, ys) shouldBe actual.toList
+
+  s"Longest common subsequence using memoization" ignore {
+    s"be $actual when comparing $xs and $ys" in {
+      checkMemoization(xs, ys, actual)
+    }
+
+    "be itself when comparing to itself" in {
+      checkMemoization(xs, xs, xs)
     }
   }
 
-  "LCS with self" should {
-    "be self" in {
-      longestCommonSubsequence(xs, xs) shouldBe xs.toList
+  s"Longest common subsequence using recursion" should {
+    s"be $actual when comparing $xs and $ys" in {
+      checkRecursive(xs, ys, actual)
+    }
+
+    "be itself when comparing to itself" in {
+      checkRecursive(xs, xs, xs)
     }
   }
 }
