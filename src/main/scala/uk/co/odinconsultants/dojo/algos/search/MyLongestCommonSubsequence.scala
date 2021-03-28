@@ -14,11 +14,7 @@ object MyLongestCommonSubsequence {
         } else {
           val a = lcs(xs.tail, ys, acc)
           val b = lcs(xs, ys.tail, acc)
-          if (a.length > b.length) {
-            a
-          } else {
-            b
-          }
+          if (a.length > b.length) a else b
         }
       }
     }
@@ -26,38 +22,45 @@ object MyLongestCommonSubsequence {
     lcs(xs, ys, Seq.empty[T])
   }
 
-  def lcsMemoization[T: Ordering](xs: Seq[T], ys: Seq[T]): Seq[T] = {
+  def lcsLengthMemoization[T: Ordering](xs: Seq[T], ys: Seq[T]): Int = {
     val n: Int = xs.length
     val m: Int = ys.length
-    type Element = Seq[T]
-    val missing: Element = null
+    type Element = Int
+    val missing: Element = -1
     val matrix: Array[Array[Element]] = for {
       _ <- (0 to n).toArray
     } yield (0 to m).map(_ => missing).toArray
 
-    def calc(i: Int, j: Int, acc: Seq[T]): Seq[T] = {
-      if (i == n || j == m) {
-        acc
+    def calc(i: Int, j: Int): Int = {
+      val v: Element = matrix(i)(j)
+
+      def isWithinRows: Boolean = i < n - 1
+
+      def isWithinColumns: Boolean = j < m - 1
+
+      if (v != missing) {
+        v
+      } else if (xs(i) == ys(j)) {
+        val newVal: Element = 1 + (if (isWithinColumns & isWithinColumns) calc(i + 1, j + 1) else 0)
+        matrix(i)(j) = newVal
+        newVal
       } else {
-        if (matrix(i)(j) != missing) {
-          matrix(i)(j)
-        } else if (xs(i) == ys(j)) {
-          val newElement: Seq[T] = acc :+ xs(i)
-          matrix(i)(j) = newElement
-          calc(1 + 1, j + 1, newElement)
-        } else {
-          val a = calc(i + 1, j, acc)
-          val b = calc(i, j + 1, acc)
-          if (a.length > b.length) {
-            matrix(i)(j) = a
-            a
-          } else {
-            matrix(i)(j) = b
-            b
-          }
-        }
+        val a = if (isWithinRows) calc(i + 1, j) else 0
+        val b = if (isWithinColumns) calc(i, j + 1) else 0
+        val optimal = math.max(a, b)
+        matrix(i)(j) = optimal
+        optimal
       }
     }
-    calc(0, 0, Seq.empty[T])
+    calc(0, 0)
+    var max = missing
+    for {
+      i <- 0 to n
+      j <- 0 to m
+    } yield {
+      max = math.max(matrix(i)(j), max)
+      max
+    }
+    max
   }
 }
