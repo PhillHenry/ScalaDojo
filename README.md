@@ -1,0 +1,2 @@
+# ScalaDojo
+Scala exercises
