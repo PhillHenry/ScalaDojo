@@ -9,13 +9,21 @@ class MyGraphsSpec extends AnyWordSpec with Matchers {
   "Empty matrix" should {
     val nRows = 7
     val nCols = 11
+    val m = emptyMatrix(nRows, nCols)
     s"have size $nRows x $nCols" in {
-      val m = emptyMatrix(nRows, nCols)
       m should have length nRows
       for {
         row <- m
       } yield {
         row should have length nCols
+      }
+    }
+    "have all elements equal to 0" in {
+      for {
+        row <- m
+        x <- row
+      } yield {
+        x shouldBe 0d
       }
     }
   }
