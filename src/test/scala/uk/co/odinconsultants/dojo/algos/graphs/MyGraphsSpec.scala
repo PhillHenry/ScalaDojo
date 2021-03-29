@@ -11,11 +11,15 @@ class MyGraphsSpec extends AnyWordSpec with Matchers {
     val xRows = 7
     val yRows = 11
     val yCols = 13
-    val xMatrix = matrix(xRows, yRows)
-    val yMatrix = matrix(yRows, yCols)
+    val element = 1d
+    val xMatrix = matrix(xRows, yRows, element)
+    val yMatrix = matrix(yRows, yCols, element)
+    val m = multiply(xMatrix, yMatrix)
     "yield the correct shape" in {
-      val m = multiply(xMatrix, yMatrix)
       checkMatrixShape(xRows, yCols, m)
+    }
+    "yield uniform elements" in {
+      checkMatrixContainsOnly(m, yRows * element)
     }
   }
 
@@ -27,7 +31,7 @@ class MyGraphsSpec extends AnyWordSpec with Matchers {
       checkMatrixShape(nRows, nCols, m)
     }
     "have all elements equal to 0" in {
-      checkMatrixContainsOnlyZeros(m)
+      checkMatrixContainsOnly(m)
     }
   }
 
@@ -40,12 +44,12 @@ class MyGraphsSpec extends AnyWordSpec with Matchers {
     }
   }
 
-  private def checkMatrixContainsOnlyZeros(m: Matrix): Unit = {
+  private def checkMatrixContainsOnly(m: Matrix, element: Double = 0): Unit = {
     for {
       row <- m
       x <- row
     } yield {
-      x shouldBe 0d
+      x shouldBe element
     }
   }
 }
