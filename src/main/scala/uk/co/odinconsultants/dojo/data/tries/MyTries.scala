@@ -4,6 +4,8 @@ import scala.collection.immutable.Map
 
 case class SeqNode[T](parent: Option[SeqNode[T]], map: Map[T, SeqNode[T]]) {
 
+  type Children = Map[T, SeqNode[T]]
+
   def find(ts: Seq[T]): Option[SeqNode[T]] = {
     if (ts.isEmpty)
       None
@@ -39,6 +41,16 @@ case class SeqNode[T](parent: Option[SeqNode[T]], map: Map[T, SeqNode[T]]) {
           parent.copy(map = parent.map + (k -> child))
       }
     }
+
+  def debugString(): String = {
+    def goDown(map: Children, depth: Int): String = {
+      val indent = " " * depth
+      map.foldLeft("") { case (acc, (t, node)) =>
+        s"$acc\n$indent$t${goDown(node.map, depth + 4)}"
+      }
+    }
+    goDown(map, 0)
+  }
 
 }
 

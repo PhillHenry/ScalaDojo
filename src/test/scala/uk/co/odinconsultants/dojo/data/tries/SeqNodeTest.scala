@@ -12,6 +12,18 @@ class SeqNodeTest extends AnyWordSpec with Matchers {
 
   val root = SeqNode[Char](None, Map.empty)
 
+  "Adding words" should {
+    "return a trie containing that word" ignore {
+      val complete = addAllWordsAndCheck(root)
+      checkAllWordsAreIn(complete)
+    }
+    "be idempotent" ignore {
+      val first   = addAllWordsAndCheck(root)
+      val second  = addAllWordsAndCheck(first)
+      checkAllWordsAreIn(second)
+    }
+  }
+
   "Adding bigrams" should {
     def checkXY(xy: MyNode): Unit = xy.find("x") match {
       case None     => fail("Cannot find first element")
@@ -63,25 +75,13 @@ class SeqNodeTest extends AnyWordSpec with Matchers {
   def checkAllWordsAreIn(node: MyNode): Unit = words.foreach { word =>
     node.find(word) match {
       case Some(x) => println(s"Found $word in $x")
-      case None => fail(s"Could not find $word in $node")
+      case None => fail(s"Could not find $word in:\n${node.debugString}\n")
     }
   }
 
   def addAllWordsAndCheck(x: MyNode): MyNode = words.foldLeft(x) { case (newRoot, aWord) =>
       addAndCheck(newRoot, aWord)
     }
-
-  "Adding words" should {
-    "return a trie containing that word" ignore {
-      val complete = addAllWordsAndCheck(root)
-      checkAllWordsAreIn(complete)
-    }
-    "be idempotent" ignore {
-      val first   = addAllWordsAndCheck(root)
-      val second  = addAllWordsAndCheck(first)
-      checkAllWordsAreIn(second)
-    }
-  }
 
   "Adding single letters" should {
     "create new nodes" in {
