@@ -13,11 +13,11 @@ class SeqNodeTest extends AnyWordSpec with Matchers {
   val root = SeqNode[Char](None, Map.empty)
 
   "Adding words" should {
-    "return a trie containing that word" ignore {
+    "return a trie containing that word" in {
       val complete = addAllWordsAndCheck(root)
       checkAllWordsAreIn(complete)
     }
-    "be idempotent" ignore {
+    "be idempotent" in {
       val first   = addAllWordsAndCheck(root)
       val second  = addAllWordsAndCheck(first)
       checkAllWordsAreIn(second)
@@ -36,10 +36,15 @@ class SeqNodeTest extends AnyWordSpec with Matchers {
     "produce a tree" in {
       val xy = root.add("xy")
       val xyz = xy.add("xz")
-      withClue(s"map:\n${xyz.map.mkString("\n")}\n") {
-        xyz.map should have size 1
-      }
+      xyz.map should have size 1
       checkXY(xyz)
+      xyz.map.get('x') match {
+        case None => fail("no x!")
+        case Some(x) => x.map should have size 2
+      }
+      val abxyz = xyz.add("ab")
+      checkXY(abxyz)
+      abxyz.map should have size 2
     }
 
     "produce a chain" in {
@@ -56,7 +61,7 @@ class SeqNodeTest extends AnyWordSpec with Matchers {
   }
 
   def addAndCheck(node: MyNode, xs: Seq[Element]): MyNode = {
-    val newRoot = root.add(xs)
+    val newRoot = node.add(xs)
     checkContains(newRoot, xs)
     newRoot.parent shouldBe None
     newRoot
