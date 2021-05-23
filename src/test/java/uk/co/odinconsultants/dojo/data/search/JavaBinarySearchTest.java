@@ -3,9 +3,11 @@ package uk.co.odinconsultants.dojo.data.search;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Random;
-import static org.hamcrest.Matchers.*;
+import java.math.BigInteger;
+import java.util.*;
+
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static uk.co.odinconsultants.dojo.data.search.JavaBinarySearch.INVALID;
 
 public class JavaBinarySearchTest {
@@ -18,6 +20,24 @@ public class JavaBinarySearchTest {
     public void setUp() {
         items = new Integer[] { 1,3,5,7,11,13,17 };
         toTest = new JavaBinarySearch(items);
+    }
+
+    @Test
+    public void sortRandoms() {
+        Random random = new Random();
+        int n = random.nextInt(100) + 20;
+        Set<BigInteger> set = new HashSet<>();
+        for (int i = 0 ; i < n ; i++) {
+            set.add(new BigInteger(random.nextInt() + ""));
+        }
+        ArrayList<BigInteger> list = new ArrayList<>(set);
+        Collections.sort(list);
+        BigInteger[] sorted = list.toArray(new BigInteger[list.size()]);
+        JavaBinarySearch<BigInteger> toTest = new JavaBinarySearch(sorted);
+        for (int k = 0 ; k < list.size() ; k++) {
+            int index = toTest.findIndexOf(sorted[k]);
+            assertThat(index, is(k));
+        }
     }
 
     @Test
