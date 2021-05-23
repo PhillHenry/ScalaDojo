@@ -37,7 +37,7 @@ public class JavaMergeSort<E extends Comparable> {
                     i += 1;
                 } else if (left[i].compareTo(right[j]) <= 0) {
                     toReturn[k] = left[i];
-                    i += i;
+                    i += 1;
                 } else {
                     toReturn[k] = right[j];
                     j += 1;
@@ -50,7 +50,6 @@ public class JavaMergeSort<E extends Comparable> {
 
     public Comparable[] sort(Comparable[] xs) {
         E[] sorted = (E[]) sortArray(xs);
-        // TODO merge
         return sorted;
     }
 
