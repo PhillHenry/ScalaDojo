@@ -1,6 +1,7 @@
 package uk.co.odinconsultants.dojo.data.sort;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class JavaMergeSort<E extends Comparable> {
@@ -22,7 +23,28 @@ public class JavaMergeSort<E extends Comparable> {
             }
             return sorted;
         } else {
-            throw new UnsupportedOperationException();
+            int midpoint = length / 2;
+            Comparable[] left = sortArray(Arrays.copyOfRange(xs, 0, midpoint));
+            Comparable[] right = sortArray(Arrays.copyOfRange(xs, midpoint, length));
+            Comparable[] toReturn = new Comparable[length];
+            int i = 0, j = 0, k = 0;
+            while (k < length) {
+                if (i == left.length) {
+                    toReturn[k] = right[j];
+                    j += 1;
+                } else if (j == right.length) {
+                    toReturn[k] = left[i];
+                    i += 1;
+                } else if (left[i].compareTo(right[j]) <= 0) {
+                    toReturn[k] = left[i];
+                    i += i;
+                } else {
+                    toReturn[k] = right[j];
+                    j += 1;
+                }
+                k += 1;
+            }
+            return toReturn;
         }
     }
 

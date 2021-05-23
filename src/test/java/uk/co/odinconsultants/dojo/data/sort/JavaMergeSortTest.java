@@ -38,6 +38,11 @@ public class JavaMergeSortTest {
         sortAndCheck(new Integer[] {41, 1});
     }
 
+    @Test
+    public void sortThreeElements() {
+        sortAndCheck(new Integer[] {3,2,1});
+    }
+
     private void sortAndCheck(Integer[] xs) {
         Comparable[] sorted = toTest.sort(xs.clone());
         ArrayList<Comparable> actual = new ArrayList<Comparable>();
