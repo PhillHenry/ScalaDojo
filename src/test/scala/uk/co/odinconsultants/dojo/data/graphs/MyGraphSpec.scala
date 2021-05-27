@@ -15,8 +15,9 @@ class MyGraphSpec extends AnyWordSpec with Matchers {
       acc ++ Set(x.from, x.to)
   }
 
+  val g = buildGraphMapping(edges)
+
   "Map created from edges" should {
-    val g = buildGraphMapping(edges)
     "contain all vertices" in {
       allNodes.foreach { node =>
         g.keySet should contain (node)
@@ -28,6 +29,15 @@ class MyGraphSpec extends AnyWordSpec with Matchers {
         val adjacencyList = g(from)
         adjacencyList should contain(to)
       }
+    }
+  }
+
+  "Traversing a map" should {
+    "yield the path when possible" ignore {
+      traverse(0, 12, g) shouldBe Seq(0, 6, 9, 12)
+    }
+    "should return None if not possible" in {
+      traverse(12, 0, g) shouldBe Seq.empty[ID]
     }
   }
 
