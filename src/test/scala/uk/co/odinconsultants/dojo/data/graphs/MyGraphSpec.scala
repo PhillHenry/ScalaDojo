@@ -17,6 +17,15 @@ class MyGraphSpec extends AnyWordSpec with Matchers {
 
   val g = buildGraphMapping(edges)
 
+  "A jumbled path" should {
+    "be more direct" in {
+      val jumbled = List(0, 1, 6, 5, 4, 9, 11, 12)
+      withClue(s"$jumbled\n") {
+        clean(g, jumbled) shouldBe List(0, 6, 9, 12)
+      }
+    }
+  }
+
   "Map created from edges" should {
     "contain all vertices" in {
       allNodes.foreach { node =>
