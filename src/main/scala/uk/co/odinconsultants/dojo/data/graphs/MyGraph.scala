@@ -28,12 +28,17 @@ object MyGraph {
       if (alreadySeen.contains(id)) {
         Seq.empty
       } else if (id == to) {
-        acc
+        acc :+ id
       } else {
         val outgoing = g(id)
-        outgoing.foldLeft(Seq.empty[ID]) { case (acc, x) =>
-          acc ++ recurse(x, id +: acc, alreadySeen + id)
+
+        val xs = for {
+          x <- outgoing
+        } yield {
+          recurse(x, acc :+ id, alreadySeen + id)
         }
+
+        xs.filter(!_.isEmpty).headOption.getOrElse(Seq.empty[ID])
       }
     }
     recurse(from, Seq.empty[ID], Set.empty[ID])
