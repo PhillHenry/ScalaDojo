@@ -24,18 +24,18 @@ object MyGraph {
   type Path = Seq[ID]
   def traverse(from: ID, to: ID, g: Graph): Path = {
 
-    def recurse(id: ID, acc: Path, alreadySeen: Set[ID]): Path = {
+    def recurse(id: ID, path: Path, alreadySeen: Set[ID]): Path = {
       if (alreadySeen.contains(id)) {
         Seq.empty
       } else if (id == to) {
-        acc :+ id
+        path :+ id
       } else {
         val outgoing = g(id)
 
         val xs = for {
           x <- outgoing
         } yield {
-          recurse(x, acc :+ id, alreadySeen + id)
+          recurse(x, path :+ id, alreadySeen + id)
         }
         xs.filter(!_.isEmpty).sortBy(_.length).headOption.getOrElse(Seq.empty[ID])
       }
