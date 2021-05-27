@@ -37,8 +37,7 @@ object MyGraph {
         } yield {
           recurse(x, acc :+ id, alreadySeen + id)
         }
-
-        xs.filter(!_.isEmpty).headOption.getOrElse(Seq.empty[ID])
+        xs.filter(!_.isEmpty).sortBy(_.length).headOption.getOrElse(Seq.empty[ID])
       }
     }
     recurse(from, Seq.empty[ID], Set.empty[ID])

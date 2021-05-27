@@ -35,7 +35,7 @@ class MyGraphSpec extends AnyWordSpec with Matchers {
   "Traversing a map" should {
     "yield the path when possible" in {
       val path = traverse(0, 12, g)
-      Set(Seq(0, 6, 9, 12), Seq(0, 6, 9, 11, 12)) should contain (path)
+      path shouldBe Seq(0, 6, 9, 12)
     }
     "should return None if not possible" in {
       traverse(12, 0, g) shouldBe Seq.empty[ID]
