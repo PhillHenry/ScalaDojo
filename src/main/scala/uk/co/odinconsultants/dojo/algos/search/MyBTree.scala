@@ -1,5 +1,7 @@
 package uk.co.odinconsultants.dojo.algos.search
 
+import scala.collection.Seq
+
 case class Node[K: Ordering, V](children: Seq[(K, Node[K, V])]) {
 
   val sorted = children.sortBy(_._1)

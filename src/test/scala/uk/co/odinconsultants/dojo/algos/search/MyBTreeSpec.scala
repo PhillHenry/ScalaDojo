@@ -3,6 +3,8 @@ package uk.co.odinconsultants.dojo.algos.search
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
+import scala.collection.Seq
+
 class MyBTreeSpec extends AnyWordSpec with Matchers {
 
   type K = String

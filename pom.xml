@@ -131,9 +131,9 @@
             <configuration>
               <compilerPlugins>
                 <compilerPlugin>
-                  <groupId>org.spire-math</groupId>
-                  <artifactId>kind-projector_${scala.compat.version}</artifactId>
-                  <version>0.9.10</version>
+                  <groupId>org.typelevel</groupId>
+                  <artifactId>kind-projector_${scala.version}</artifactId>
+                  <version>0.13.0</version>
                 </compilerPlugin>
               </compilerPlugins>
               <args>
@@ -170,19 +170,4 @@
       </plugin>
     </plugins>
   </build>
-  <repositories>
-    <!--
-        <repository>
-          <id>MavenCentral</id>
-          <name>Maven Central Repository</name>
-          <url>http://central.maven.org/maven2/</url>
-        </repository>
-
-        <repository>
-          <id>sonatype-shapshot</id>
-          <name>Sonatype Snapshot Repository</name>
-          <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </repository>
-    -->
-  </repositories>
 </project>
