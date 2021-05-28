@@ -51,4 +51,28 @@ class MyGraphSpec extends AnyWordSpec with Matchers {
     }
   }
 
+  "An empty graph" should {
+    "transform to a matrix of all zeros" in {
+      val m = toMatrix(buildGraphMapping(Seq.empty))
+      for {
+        row <-m
+      } yield {
+        row.filter(_ != 0d) shouldBe empty
+      }
+    }
+  }
+
+  "A non empty graph" should {
+    val m = toMatrix(g)
+    val numNodes = 13
+    "be transformed to a matrix the size of the keys" in {
+      m.length shouldBe numNodes
+      for {
+        row <- m
+      } yield {
+        row.length shouldBe numNodes
+      }
+    }
+  }
+
 }

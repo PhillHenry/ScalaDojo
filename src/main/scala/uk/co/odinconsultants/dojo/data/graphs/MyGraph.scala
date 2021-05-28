@@ -70,4 +70,18 @@ object MyGraph {
     }
   }
 
+  def toMatrix(g: Graph): Seq[Seq[Double]] =
+    g.keySet.toList.maxOption match {
+      case Some(n) =>
+        val rows: Seq[Seq[Double]] = for {
+          i <- (0 to n)
+        } yield {
+          val row = Seq.fill(n + 1)(0d)
+          row
+        }
+        rows
+      case None => Seq.empty
+    }
+
+
 }
